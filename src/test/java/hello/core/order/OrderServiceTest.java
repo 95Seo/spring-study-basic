@@ -6,9 +6,12 @@ import hello.core.member.domain.Member;
 import hello.core.member.service.MemberService;
 import hello.core.order.domain.Order;
 import hello.core.order.service.OrderService;
-import org.assertj.core.api.Assertions;
+import hello.core.order.service.OrderServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderServiceTest {
 
@@ -33,6 +36,15 @@ public class OrderServiceTest {
         Order order = orderService.createOrder(memberId, "itemA", 10000);
 
         // then
-        Assertions.assertThat(order.getDiscountPrice()).isEqualTo(1000);
+        assertThat(order.getDiscountPrice()).isEqualTo(1000);
+    }
+
+    // 필드 주입 방식은 스프링 컨테이너가 아닌 new 를 사용해서 객체를 생성할 경우 의존 주입을 받지 못해 NullPoint
+    // DI 프레임워크가 없으면 아무것도 할 수 않는다. 사용하지 말자.
+    @Test
+    void fieldInjectionTest() {
+        OrderServiceImpl orderService = new OrderServiceImpl();
+        assertThrows(NullPointerException.class,
+                () -> orderService.createOrder(1L, "itemA", 10000));
     }
 }
