@@ -41,10 +41,11 @@ public class OrderServiceTest {
 
     // 필드 주입 방식은 스프링 컨테이너가 아닌 new 를 사용해서 객체를 생성할 경우 의존 주입을 받지 못해 NullPoint
     // DI 프레임워크가 없으면 아무것도 할 수 않는다. 사용하지 말자.
-    @Test
-    void fieldInjectionTest() {
-        OrderServiceImpl orderService = new OrderServiceImpl();
-        assertThrows(NullPointerException.class,
-                () -> orderService.createOrder(1L, "itemA", 10000));
-    }
+    // 현재 @RequiredArgConstruct 어노테이션에 의해 final된 객체를 주입하지 않으면 orderService 객체를 생성할 수 없음.
+//    @Test
+//    void fieldInjectionTest() {
+//        OrderServiceImpl orderService = new OrderServiceImpl();
+//        assertThrows(NullPointerException.class,
+//                () -> orderService.createOrder(1L, "itemA", 10000));
+//    }
 }
